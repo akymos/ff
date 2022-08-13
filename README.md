@@ -3,8 +3,29 @@ ff is a command-line tool to manage favorite folders, creating an alias, to be u
 
 [![asciicast](https://asciinema.org/a/UCxUx5TkKEUEitKyg8FEUZFCi.svg)](https://asciinema.org/a/UCxUx5TkKEUEitKyg8FEUZFCi)
 
-# Usage
+* [Installation](#installation)
+  * [Prebuilt binary](#prebuilt-binary)
+  * [Update](#update)
+* [Usage](#usage)
+* [Todo](#todo)
 
+# Installation
+## Prebuilt binary
+Download the prebuilt binary from [here](https://github.com/akymos/ff/releases/latest) and run the following command:
+```bash
+tar -xf <prebuilt_archive> ff && sudo mv ff /usr/local/bin
+```
+Nest add the following line to `~/.zshrc` or `~/.bashrc`: 
+```bash
+source "$(ff alias)"
+```
+## Update
+For update the installed version of ff, run the following command:
+```bash
+ff self-update
+```
+
+# Usage
 ```bash
 $ ff
 ff is a command-line tool to manage favorite folders, creating an alias,
@@ -21,6 +42,7 @@ Available Commands:
   help        Help about any command
   list        List saved aliases.
   panic       WARINING!! This delete all saved data
+  self-update Update ff to the latest version.
   update      Update a directory alias
 
 Flags:
@@ -32,7 +54,8 @@ Use "ff [command] --help" for more information about a command.
 
 # TODO
 - [ ] clean up the code
-- [X] use github workflow to build the binary
+- [X] use GitHub workflow to build the binary
 - [ ] use github.com/manifoldco/promptui for edit command
 - [ ] make a better readme
+- [ ] windows support
 - [ ] ......
