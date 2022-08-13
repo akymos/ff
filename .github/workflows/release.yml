@@ -33,7 +33,7 @@ jobs:
         with:
           distribution: goreleaser
           version: latest
-          args: release --rm-dist --snapshot --skip-publish=false
+          args: release --rm-dist
         env:
           GO386: softfloat
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
