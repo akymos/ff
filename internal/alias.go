@@ -7,7 +7,7 @@ import (
 )
 
 func InitAlias() error {
-	file, err := os.OpenFile(baseConfig.aliasFile, os.O_CREATE|os.O_WRONLY, 0666)
+	file, err := os.OpenFile(BaseConfig.AliasFile, os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		return err
 	}
@@ -27,11 +27,11 @@ func InitAlias() error {
 }
 
 func GetAlias() string {
-	return baseConfig.aliasFile
+	return BaseConfig.AliasFile
 }
 
 func PopulateAlias() error {
-	file, err := os.OpenFile(baseConfig.aliasFile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
+	file, err := os.OpenFile(BaseConfig.AliasFile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
 	if err != nil {
 		return err
 	}
@@ -53,7 +53,7 @@ cd() {
 	list := LocalDb.FindAll()
 	buffer := &bytes.Buffer{}
 	err = aliasTpl.Execute(buffer, map[string]interface{}{
-		"BasePath":  baseConfig.ffDir,
+		"BasePath":  BaseConfig.FfDir,
 		"AliasList": list,
 	})
 	_, err = file.Write(buffer.Bytes())

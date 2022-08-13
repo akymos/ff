@@ -7,22 +7,22 @@ import (
 )
 
 type config struct {
-	aliasFile string
-	dbFile    string
-	ffDir     string
+	AliasFile string
+	DbFile    string
+	FfDir     string
 }
 
-var baseConfig config
+var BaseConfig config
 
 func InitConfig() error {
 	homedir, _ := os.UserHomeDir()
-	baseConfig = config{
-		aliasFile: fmt.Sprintf("%s/.ff/ffAlias", homedir),
-		dbFile:    fmt.Sprintf("%s/.ff/db.json", homedir),
-		ffDir:     fmt.Sprintf("%s/.ff", homedir),
+	BaseConfig = config{
+		AliasFile: fmt.Sprintf("%s/.ff/ffAlias", homedir),
+		DbFile:    fmt.Sprintf("%s/.ff/db.json", homedir),
+		FfDir:     fmt.Sprintf("%s/.ff", homedir),
 	}
-	if _, err := os.Stat(baseConfig.ffDir); errors.Is(err, os.ErrNotExist) {
-		err := os.Mkdir(baseConfig.ffDir, os.ModePerm)
+	if _, err := os.Stat(BaseConfig.FfDir); errors.Is(err, os.ErrNotExist) {
+		err := os.Mkdir(BaseConfig.FfDir, os.ModePerm)
 		if err != nil {
 			return err
 		}

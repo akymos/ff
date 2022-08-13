@@ -17,7 +17,7 @@ type db struct {
 var LocalDb db
 
 func InitDb() error {
-	jsonFile, err := os.Open(baseConfig.dbFile)
+	jsonFile, err := os.Open(BaseConfig.DbFile)
 	defer jsonFile.Close()
 	if err != nil {
 		LocalDb.data = make(map[string]string)
@@ -34,7 +34,7 @@ func InitDb() error {
 
 func WriteDb() {
 	file, err := json.Marshal(LocalDb.data)
-	err = os.WriteFile(baseConfig.dbFile, file, 0666)
+	err = os.WriteFile(BaseConfig.DbFile, file, 0666)
 	if err != nil {
 		fmt.Println("error writing to file")
 	}
