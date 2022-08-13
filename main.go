@@ -7,5 +7,5 @@ var commit string
 var version string
 
 func main() {
-	cmd.Execute()
+	cmd.Execute(version, date, commit)
 }
