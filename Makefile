@@ -1,11 +1,10 @@
-GO = go
-GO_BUILD = $(GO) build
-TARGET_DIR = build
-LD_FLAGS := -s -w
+.PHONY: all tidy local-build
 
-.PHONY: all build-osx
+all: tidy local-builds
 
-all: build-osx
+tidy:
+	go mod tidy
 
-build-osx:
-	GOOS=darwin GOARCH=amd64 $(GO_BUILD) -ldflags "$(LD_FLAGS)" -o $(TARGET_DIR)/ff .
+local-build:
+	go install github.com/goreleaser/goreleaser@latest
+	goreleaser build --snapshot --rm-dist

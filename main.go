@@ -5,6 +5,10 @@ import (
 	"os"
 )
 
+var date string
+var commit string
+var version string
+
 func main() {
 	err := initConfig()
 	if err != nil {
@@ -107,13 +111,17 @@ Available Commands:
   list, ls, l         List all aliases.
   alias               Prints out the path to the alias file.
 
-Eamples:
+Examples:
   ff add current_folder_alias
   ff + alias_name /path/to/folder
   ff update alias_name /path/to/new/folder
   ff ls
   ff del alias_name
-`)
+
+Version: %s
+BuildTime: %s
+GitHash: %s
+`, version, date, commit)
 	}
 	os.Exit(0)
 }
