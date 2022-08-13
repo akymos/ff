@@ -9,14 +9,15 @@ import (
 var (
 	aliasCmd = &cobra.Command{
 		Use:   "alias",
-		Short: "short description",
-		Long:  `long description`,
-		Run: func(cmd *cobra.Command, args []string) {
+		Short: "Prints out the path to the alias file.",
+		Long:  `Prints out the path to the alias file.`,
+		RunE: func(cmd *cobra.Command, args []string) error {
 			err := internal.PopulateAlias()
 			if err != nil {
-				return
+				return err
 			}
 			fmt.Println(internal.GetAlias())
+			return nil
 		},
 	}
 )

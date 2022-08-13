@@ -9,18 +9,19 @@ import (
 
 var (
 	rootCmd = &cobra.Command{
-		Use:   "ff",
-		Short: "A generator for Cobra based Applications",
-		Long: `Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+		Use: "ff",
+		Long: `ff is a command-line tool to manage favorite folders, creating an alias,
+to be used via shell directly with the cd command.`,
 	}
 )
 
 // Execute executes the root command.
 func Execute() error {
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
-	return rootCmd.Execute()
+	if err := rootCmd.Execute(); err != nil {
+		os.Exit(1)
+	}
+	return nil
 }
 
 func init() {

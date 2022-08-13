@@ -1,34 +1,31 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"github.com/akymos/ff/internal"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var (
 	getCmd = &cobra.Command{
-		Use:     "get",
+		Use:     "get [alias]",
 		Aliases: []string{"g"},
-		Short:   "short description",
-		Long:    `long description`,
-		Args: func(cmd *cobra.Command, args []string) error {
-			if len(args) < 1 {
-				return errors.New("you need, at least, specify the alias")
-			}
-			return nil
-		},
-		Run: func(cmd *cobra.Command, args []string) {
+		Short:   "Return the raw path of an alias.",
+		Long: `Return the raw path of an alias, useful, for example, with ls.
+
+Arguments:
+[alias] required. The name of the alias.`,
+		Example: `$ ls "$(ff get alias_name)"
+$ cp test.txt "$(ff get alias_name)"`,
+		Args: cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
 			alias := args[0]
 			p, err := internal.LocalDb.Get(alias)
 			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
+				return err
 			}
 			fmt.Printf("%s", *p)
-			os.Exit(0)
+			return nil
 		},
 	}
 )
