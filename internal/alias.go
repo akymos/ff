@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"bytes"
@@ -6,7 +6,7 @@ import (
 	"text/template"
 )
 
-func initAlias() error {
+func InitAlias() error {
 	file, err := os.OpenFile(baseConfig.aliasFile, os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		return err
@@ -26,11 +26,11 @@ func initAlias() error {
 	return nil
 }
 
-func getAlias() string {
+func GetAlias() string {
 	return baseConfig.aliasFile
 }
 
-func populateAlias() error {
+func PopulateAlias() error {
 	file, err := os.OpenFile(baseConfig.aliasFile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
 	if err != nil {
 		return err
@@ -50,7 +50,7 @@ cd() {
 	fi;
 }
 `))
-	list := localDb.findAll()
+	list := LocalDb.FindAll()
 	buffer := &bytes.Buffer{}
 	err = aliasTpl.Execute(buffer, map[string]interface{}{
 		"BasePath":  baseConfig.ffDir,

@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"errors"
@@ -14,7 +14,7 @@ type config struct {
 
 var baseConfig config
 
-func initConfig() error {
+func InitConfig() error {
 	homedir, _ := os.UserHomeDir()
 	baseConfig = config{
 		aliasFile: fmt.Sprintf("%s/.ff/ffAlias", homedir),
@@ -27,10 +27,10 @@ func initConfig() error {
 			return err
 		}
 	}
-	err := initAlias()
+	err := InitAlias()
 	if err != nil {
 		return err
 	}
-	initDb()
+	InitDb()
 	return nil
 }
