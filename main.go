@@ -69,6 +69,7 @@ func main() {
 			p, err := os.Getwd()
 			if err != nil {
 				fmt.Println(err)
+				os.Exit(1)
 			}
 			arg2 = p
 		}
@@ -91,6 +92,14 @@ func main() {
 			fmt.Printf("Alias: %s -> Folder: %s\n", k, v)
 		}
 		os.Exit(0)
+	case "get", "g":
+		p, err := localDb.get(arg1)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		fmt.Printf("%s", *p)
+		os.Exit(0)
 	case "alias":
 		err = populateAlias()
 		if err != nil {
@@ -109,6 +118,7 @@ Available Commands:
   delete, del, d, -   Remove an alias.
   update, upd, u      Update an alias.
   list, ls, l         List all aliases.
+  get, g              Return the raw path of an alias, useful, for example, with ls.
   alias               Prints out the path to the alias file.
 
 Examples:
@@ -116,6 +126,7 @@ Examples:
   ff + alias_name /path/to/folder
   ff update alias_name /path/to/new/folder
   ff ls
+  ls -lha "$(ff g alias_name)"
   ff del alias_name
 
 Version: %s
