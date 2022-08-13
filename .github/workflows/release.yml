@@ -16,8 +16,8 @@ jobs:
     steps:
       - name: Install Packages
         run: |
-          apt-get -qqy update
-          apt-get -qqy install build-essential curl git > /dev/null
+          sudo apt-get -qqy update
+          sudo apt-get -qqy install build-essential curl git > /dev/null
       - name: Checkout
         uses: actions/checkout@v3
         with:
