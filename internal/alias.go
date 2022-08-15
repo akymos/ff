@@ -50,7 +50,7 @@ cd() {
 	fi;
 }
 `))
-	list := LocalDb.FindAll()
+	list := FindAll()
 	buffer := &bytes.Buffer{}
 	err = aliasTpl.Execute(buffer, map[string]interface{}{
 		"BasePath":  BaseConfig.FfDir,

@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"github.com/akymos/ff/internal"
 	"github.com/creativeprojects/go-selfupdate"
 	"github.com/spf13/cobra"
 	"log"
@@ -16,6 +17,7 @@ var (
 		Short: "Update ff to the latest version.",
 		Long:  `Update ff to the latest version.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			defer internal.BaseConfig.Db.Close()
 			latest, found, err := selfupdate.DetectLatest("akymos/ff")
 			if err != nil {
 				return fmt.Errorf("error occurred while detecting version: %v", err)

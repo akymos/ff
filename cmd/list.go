@@ -12,7 +12,8 @@ var (
 		Aliases: []string{"ls", "l"},
 		Short:   "List saved aliases.",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			list := internal.LocalDb.FindAll()
+			defer internal.BaseConfig.Db.Close()
+			list := internal.FindAll()
 			if len(list) == 0 {
 				fmt.Println("No aliases found.")
 				return nil

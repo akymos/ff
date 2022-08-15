@@ -13,6 +13,7 @@ var (
 		Use:   "panic",
 		Short: "WARINING!! This delete all saved data",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			internal.BaseConfig.Db.Close()
 			prompt := promptui.Prompt{
 				Label: "Are you sure to delete all saved data? (y/n)",
 			}

@@ -1,100 +1,105 @@
 package internal
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
-	"os"
-	"sync"
+	bolt "go.etcd.io/bbolt"
 )
 
-type db struct {
-	data map[string]string
-	m    sync.Mutex
+func InitDb() (*bolt.DB, error) {
+	db, err := bolt.Open(BaseConfig.DbFile, 0600, nil)
+	if err != nil {
+		return nil, err
+	}
+	err = db.Update(func(tx *bolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists([]byte("ff"))
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return db, nil
 }
 
-var LocalDb db
-
-func InitDb() error {
-	jsonFile, err := os.Open(BaseConfig.DbFile)
-	defer jsonFile.Close()
-	if err != nil {
-		LocalDb.data = make(map[string]string)
-		return nil
+// Add a new element
+func Add(k string, v string) error {
+	val, err := Get(k)
+	if val != nil {
+		return errors.New(fmt.Sprintf("key \"%s\" already exists", k))
 	}
-
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-	err = json.Unmarshal(byteValue, &LocalDb.data)
+	err = BaseConfig.Db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("ff"))
+		return b.Put([]byte(k), []byte(v))
+	})
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func WriteDb() {
-	file, err := json.Marshal(LocalDb.data)
-	err = os.WriteFile(BaseConfig.DbFile, file, 0666)
-	if err != nil {
-		fmt.Println("error writing to file")
-	}
-}
-
-// Add a new element
-func (d *db) Add(k string, v string) error {
-	if k == "" {
-		return errors.New("key is empty")
-	}
-	_, ok := d.data[k]
-	if !ok {
-		d.m.Lock()
-		defer d.m.Unlock()
-		d.data[k] = v
-		return nil
-	}
-	return errors.New(fmt.Sprintf("key \"%s\" already exists", k))
-}
-
 // find an element by key
-func (d *db) Get(k string) (*string, error) {
-	d.m.Lock()
-	defer d.m.Unlock()
-	_, ok := d.data[k]
-	if ok {
-		b := d.data[k]
-		return &b, nil
+func Get(k string) (*string, error) {
+	var val string
+	err := BaseConfig.Db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("ff"))
+		val = string(b.Get([]byte(k)))
+		return nil
+	})
+	if err != nil {
+		return nil, err
 	}
-	return nil, errors.New(fmt.Sprintf("key \"%s\" not found", k))
+	if val == "" {
+		return nil, errors.New(fmt.Sprintf("key \"%s\" not found", k))
+	}
+	return &val, nil
+
 }
 
 // Del delete an element by key
-func (d *db) Del(k string) error {
-	d.m.Lock()
-	defer d.m.Unlock()
-	_, ok := d.data[k]
-	if ok {
-		delete(d.data, k)
-		return nil
+func Del(k string) error {
+	_, err := Get(k)
+	if err != nil {
+		return err
 	}
-	return errors.New(fmt.Sprintf("key \"%s\" not found", k))
+	err = BaseConfig.Db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("ff"))
+		return b.Delete([]byte(k))
+	})
+	return err
 }
 
 // Update an element by key
-func (d *db) Update(k string, v string) error {
-	d.m.Lock()
-	defer d.m.Unlock()
-	_, ok := d.data[k]
-	if ok {
-		d.data[k] = v
-		return nil
+func Update(k string, v string) error {
+	_, err := Get(k)
+	if err == nil {
+		return errors.New(fmt.Sprintf("key \"%s\" not found", k))
 	}
-	return errors.New(fmt.Sprintf("key \"%s\" not found", k))
-
+	err = BaseConfig.Db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("ff"))
+		return b.Put([]byte(k), []byte(v))
+	})
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // FindAll prints all elements
-func (d *db) FindAll() map[string]string {
-	d.m.Lock()
-	defer d.m.Unlock()
-	return d.data
+func FindAll() map[string]string {
+	data := make(map[string]string)
+	err := BaseConfig.Db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("ff"))
+		c := b.Cursor()
+		for k, v := c.First(); k != nil; k, v = c.Next() {
+			data[string(k)] = string(v)
+		}
+		return nil
+	})
+	if err != nil {
+		return nil
+	}
+	return data
 }

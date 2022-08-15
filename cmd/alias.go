@@ -12,6 +12,7 @@ var (
 		Short: "Prints out the path to the alias file.",
 		Long:  `Prints out the path to the alias file.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			defer internal.BaseConfig.Db.Close()
 			err := internal.PopulateAlias()
 			if err != nil {
 				return err

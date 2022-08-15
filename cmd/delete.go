@@ -23,9 +23,10 @@ var (
 Arguments:
 [alias] optional. The name of the alias.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			defer internal.BaseConfig.Db.Close()
 			alias := ""
 			if len(args) < 1 {
-				list := internal.LocalDb.FindAll()
+				list := internal.FindAll()
 				if len(list) == 0 {
 					return errors.New("no aliases found")
 				}
@@ -56,7 +57,7 @@ Arguments:
 					return nil
 				}
 				alias = aliasesList[i].Key
-				err = internal.LocalDb.Del(alias)
+				err = internal.Del(alias)
 				if err != nil {
 					return err
 				}
@@ -66,7 +67,7 @@ Arguments:
 				}
 			} else {
 				alias = args[0]
-				err := internal.LocalDb.Del(alias)
+				err := internal.Del(alias)
 				if err != nil {
 					return err
 				}
@@ -75,7 +76,6 @@ Arguments:
 					return err
 				}
 			}
-			internal.WriteDb()
 			fmt.Printf("Alias %s deleted.\n", alias)
 			fmt.Printf("Now run \n%s\nor restart the shell.\n", "source \"$(ff alias)\"")
 			return nil

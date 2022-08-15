@@ -17,3 +17,5 @@ checksum:
   name_template: 'checksums.txt'
 snapshot:
   name_template: "{{ incpatch .Version }}-next"
+release:
+  prerelease: auto

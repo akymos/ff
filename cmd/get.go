@@ -19,8 +19,9 @@ Arguments:
 $ cp test.txt "$(ff get alias_name)"`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
+			defer internal.BaseConfig.Db.Close()
 			alias := args[0]
-			p, err := internal.LocalDb.Get(alias)
+			p, err := internal.Get(alias)
 			if err != nil {
 				return err
 			}
