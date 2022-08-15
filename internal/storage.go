@@ -73,8 +73,8 @@ func Del(k string) error {
 
 // Update an element by key
 func Update(k string, v string) error {
-	_, err := Get(k)
-	if err == nil {
+	val, err := Get(k)
+	if val == nil {
 		return errors.New(fmt.Sprintf("key \"%s\" not found", k))
 	}
 	err = BaseConfig.Db.Update(func(tx *bolt.Tx) error {
