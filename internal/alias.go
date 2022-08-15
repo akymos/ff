@@ -43,7 +43,7 @@ cd() {
 	else 
 		if [[ $@ == "ff-config" ]]; then builtin cd {{ .BasePath }};
 		{{- range $key, $val := .AliasList}}
-		elif [[ $@ == "{{$key}}" ]]; then builtin cd {{$val}};
+		elif [[ $@ == "{{$key}}" ]]; then builtin cd "{{$val}}";
 		{{- end}}
 		else builtin cd "$@"; 
 		fi; 
