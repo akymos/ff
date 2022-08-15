@@ -16,14 +16,14 @@ to be used via shell directly with the cd command.`,
 )
 
 // Execute executes the root command.
-func Execute(version string, date string, commit string) error {
+func Execute() error {
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
-	rootCmd.Version = version
-	rootCmd.SetVersionTemplate(fmt.Sprintf("Version: %s\nCommit: %s\nBuild on: %s\n", version, commit, date))
-
+	rootCmd.Version = internal.GetVersion()
+	rootCmd.SetVersionTemplate(fmt.Sprintf("Version: %s\nCommit: %s\nBuild on: %s\n", internal.GetVersion(), internal.GetCommit(), internal.GetDate()))
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
+	internal.CheckNewVersion()
 	return nil
 }
 

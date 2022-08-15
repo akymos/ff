@@ -78,6 +78,7 @@ Arguments:
 			}
 			fmt.Printf("Alias %s deleted.\n", alias)
 			fmt.Printf("Now run \n%s\nor restart the shell.\n", "source \"$(ff alias)\"")
+			internal.CheckNewVersion()
 			return nil
 		},
 	}

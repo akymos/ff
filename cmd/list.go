@@ -21,6 +21,7 @@ var (
 			for k, v := range list {
 				fmt.Printf("Alias: %s -> Folder: %s\n", k, v)
 			}
+			internal.CheckNewVersion()
 			return nil
 		},
 	}

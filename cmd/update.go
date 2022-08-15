@@ -42,6 +42,7 @@ Arguments:
 			}
 			fmt.Printf("Alias %s updated to %s.\n", alias, path)
 			fmt.Printf("Now run \n%s\nor restart the shell.\n", "source \"$(ff alias)\"")
+			internal.CheckNewVersion()
 			return nil
 		},
 	}

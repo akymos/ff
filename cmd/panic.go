@@ -31,6 +31,7 @@ var (
 			} else {
 				fmt.Println("Canceled")
 			}
+			internal.CheckNewVersion()
 			return nil
 		},
 	}
