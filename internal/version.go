@@ -14,7 +14,6 @@ var commit string
 var date string
 
 func CheckNewVersion() {
-	fmt.Println("Checking for new version...")
 	latest, _, err := selfupdate.DetectLatest("akymos/ff")
 	if err != nil {
 		return
