@@ -8,6 +8,7 @@ ff is a command-line tool to manage favorite folders, creating an alias, to be u
 
 [![asciicast](https://asciinema.org/a/UCxUx5TkKEUEitKyg8FEUZFCi.svg)](https://asciinema.org/a/UCxUx5TkKEUEitKyg8FEUZFCi)
 
+* [Features](#features)
 * [Installation](#installation)
   * [Prebuilt binary](#prebuilt-binary)
   * [Update](#update)
