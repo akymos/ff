@@ -17,6 +17,8 @@ var (
 Arguments:
 [alias] required. The name of the alias.
 [path] optional. It is the path to the directory to be aliased. Default is the current directory.`,
+		Example: `$ ff add alias_name
+$ ff add alias2 /tmp`,
 		Args: cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			defer internal.BaseConfig.Db.Close()

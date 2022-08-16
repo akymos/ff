@@ -20,11 +20,7 @@ var (
 	deleteCmd = &cobra.Command{
 		Use:     "delete",
 		Aliases: []string{"del", "d", "-"},
-		Short:   "Delete a directory alias.",
-		Long: `Delete a directory alias.
-
-Arguments:
-[alias] optional. The name of the alias.`,
+		Short:   "Interactively allows you to delete an alias",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			defer internal.BaseConfig.Db.Close()
 			alias := ""

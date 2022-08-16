@@ -12,6 +12,9 @@ var (
 		Use: "ff",
 		Long: `ff is a command-line tool to manage favorite folders, creating an alias,
 to be used via shell directly with the cd command.`,
+		Example: `$ ff add alias_name
+$ ff add alias2 /tmp
+$ ff update alias_name /var`,
 	}
 )
 

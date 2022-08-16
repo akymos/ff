@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"github.com/akymos/ff/internal"
 	"github.com/chzyer/readline"
@@ -15,12 +14,13 @@ var (
 	listCmd = &cobra.Command{
 		Use:     "list",
 		Aliases: []string{"ls", "l"},
-		Short:   "List saved aliases.",
+		Short:   "List saved aliases",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			defer internal.BaseConfig.Db.Close()
 			list := internal.FindAll()
 			if len(list) == 0 {
-				return errors.New("no aliases found")
+				fmt.Println("no aliases found")
+				return nil
 			}
 			aliasesList := make([]aliasList, 0)
 			for k, v := range list {

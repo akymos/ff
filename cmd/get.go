@@ -10,7 +10,7 @@ var (
 	getCmd = &cobra.Command{
 		Use:     "get [alias]",
 		Aliases: []string{"g"},
-		Short:   "Return the raw path of an alias.",
+		Short:   "Return the raw path of an alias",
 		Long: `Return the raw path of an alias, useful, for example, with ls.
 
 Arguments:

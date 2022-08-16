@@ -8,8 +8,7 @@ import (
 var (
 	selfUpdateCmd = &cobra.Command{
 		Use:   "self-update",
-		Short: "Update ff to the latest version.",
-		Long:  `Update ff to the latest version.`,
+		Short: "Update ff to the latest version",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			defer internal.BaseConfig.Db.Close()
 			return internal.UpdateVersion()
