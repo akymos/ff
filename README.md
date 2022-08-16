@@ -1,4 +1,9 @@
 # ff
+
+![Release](https://github.com/akymos/ff/actions/workflows/release.yml/badge.svg)
+[![Go Report Card](https://goreportcard.com/badge/github.com/akymos/ff)](https://goreportcard.com/report/github.com/akymos/ff)
+
+
 ff is a command-line tool to manage favorite folders, creating an alias, to be used via shell directly with the cd command.
 
 [![asciicast](https://asciinema.org/a/UCxUx5TkKEUEitKyg8FEUZFCi.svg)](https://asciinema.org/a/UCxUx5TkKEUEitKyg8FEUZFCi)
@@ -54,8 +59,6 @@ Use "ff [command] --help" for more information about a command.
 
 # TODO
 - [ ] clean up the code
-- [X] use GitHub workflow to build the binary
-- [ ] use github.com/manifoldco/promptui for edit command
 - [ ] make a better readme
 - [ ] windows support
 - [ ] ......
