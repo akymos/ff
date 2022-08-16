@@ -1,6 +1,6 @@
 # ff
 
-![Release](https://github.com/akymos/ff/actions/workflows/release.yml/badge.svg)
+![Release](https://github.com/akymos/ff/actions/workflows/release.yml/badge.svg?branch=)
 [![Go Report Card](https://goreportcard.com/badge/github.com/akymos/ff)](https://goreportcard.com/report/github.com/akymos/ff)
 
 
