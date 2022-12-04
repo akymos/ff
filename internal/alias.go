@@ -39,7 +39,8 @@ func PopulateAlias() error {
 
 	aliasTpl := template.Must(template.New("cd_override").Parse(`#!/bin/bash
 cd() { 
-	if [[ -d $* ]]; then builtin cd "$@" || return; 
+	if [[ $# -eq 0 ]]; then builtin cd ~ || return;
+	elif [[ -d $* ]]; then builtin cd "$@" || return; 
 	else 
 		if [[ $* == "ff-config" ]]; then builtin cd {{ .BasePath }} || return;
 		{{- range $key, $val := .AliasList}}
