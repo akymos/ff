@@ -7,6 +7,7 @@ import (
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh/terminal"
+	"sort"
 	"strings"
 )
 
@@ -26,6 +27,11 @@ var (
 			for k, v := range list {
 				aliasesList = append(aliasesList, aliasList{Key: k, Val: v})
 			}
+
+			// sort aliasesList by key alphabetically
+			sort.Slice(aliasesList, func(i, j int) bool {
+				return aliasesList[i].Key < aliasesList[j].Key
+			})
 
 			_, height, err := terminal.GetSize(0)
 			if err != nil {
