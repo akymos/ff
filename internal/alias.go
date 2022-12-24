@@ -30,7 +30,7 @@ func GetAlias() string {
 	return BaseConfig.AliasFile
 }
 
-func PopulateAlias() error {
+func GenerateAlias() error {
 	file, err := os.OpenFile(BaseConfig.AliasFile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
 	if err != nil {
 		return err

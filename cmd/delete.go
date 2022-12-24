@@ -84,7 +84,7 @@ var (
 			if err != nil {
 				return err
 			}
-			err = internal.PopulateAlias()
+			err = internal.GenerateAlias()
 			if err != nil {
 				return err
 			}
