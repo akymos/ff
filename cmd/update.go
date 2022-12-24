@@ -36,11 +36,15 @@ $ ff update alias_name /var`,
 				}
 				path = p
 			}
-			if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
+			st, err := os.Stat(path)
+			if errors.Is(err, os.ErrNotExist) {
 				return err
 			}
+			if !st.IsDir() {
+				return errors.New(fmt.Sprintf("\"%s\" is not a directory", path))
+			}
 			alias = strings.ReplaceAll(alias, " ", "_")
-			err := internal.Update(alias, path)
+			err = internal.Update(alias, path)
 			if err != nil {
 				return err
 			}

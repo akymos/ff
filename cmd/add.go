@@ -36,11 +36,16 @@ $ ff add alias2 /tmp`,
 				}
 				path = p
 			}
-			if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
+			st, err := os.Stat(path)
+			if errors.Is(err, os.ErrNotExist) {
 				return err
 			}
+			if !st.IsDir() {
+				return errors.New(fmt.Sprintf("\"%s\" is not a directory", path))
+			}
+
 			alias = strings.ReplaceAll(alias, " ", "_")
-			err := internal.Add(alias, path)
+			err = internal.Add(alias, path)
 			if err != nil {
 				return err
 			}
