@@ -1,12 +1,14 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/akymos/ff/internal"
 	"github.com/chzyer/readline"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh/terminal"
+	"os"
 	"sort"
 	"strings"
 )
@@ -25,7 +27,15 @@ var (
 			}
 			aliasesList := make([]aliasList, 0)
 			for k, v := range list {
-				aliasesList = append(aliasesList, aliasList{Key: k, Val: v})
+				status := promptui.IconGood
+				if _, err := os.Stat(v); errors.Is(err, os.ErrNotExist) {
+					status = promptui.IconWarn
+				}
+				aliasesList = append(aliasesList, aliasList{
+					Key:    k,
+					Val:    v,
+					Status: status,
+				})
 			}
 
 			// sort aliasesList by key alphabetically
@@ -44,9 +54,9 @@ var (
 				Size:  height - 3,
 				Templates: &promptui.SelectTemplates{
 					Label:    "{{ . }}",
-					Active:   " {{ .Key }} ({{ .Val }})",
-					Inactive: "{{ .Key }} ({{ .Val }})",
-					Selected: " {{ .Key }} ({{ .Val }})",
+					Active:   " {{ .Status }} {{ .Key }} ({{ .Val }})",
+					Inactive: "{{ .Status }} {{ .Key }} ({{ .Val }})",
+					Selected: "{{ .Status }} {{ .Key }} ({{ .Val }})",
 				},
 				Searcher: func(input string, index int) bool {
 					alias := aliasesList[index]

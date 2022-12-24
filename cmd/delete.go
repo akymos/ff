@@ -8,13 +8,15 @@ import (
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh/terminal"
+	"os"
 	"sort"
 	"strings"
 )
 
 type aliasList struct {
-	Key string
-	Val string
+	Status string
+	Key    string
+	Val    string
 }
 
 var (
@@ -31,7 +33,15 @@ var (
 			}
 			aliasesList := make([]aliasList, 0)
 			for k, v := range list {
-				aliasesList = append(aliasesList, aliasList{Key: k, Val: v})
+				status := promptui.IconGood
+				if _, err := os.Stat(v); errors.Is(err, os.ErrNotExist) {
+					status = promptui.IconWarn
+				}
+				aliasesList = append(aliasesList, aliasList{
+					Key:    k,
+					Val:    v,
+					Status: status,
+				})
 			}
 
 			// sort aliasesList by key alphabetically
@@ -50,9 +60,9 @@ var (
 				Size:  height - 3,
 				Templates: &promptui.SelectTemplates{
 					Label:    "{{ . }}",
-					Active:   "-> {{ .Key }} ({{ .Val }})",
-					Inactive: "{{ .Key }} ({{ .Val }})",
-					Selected: "-> {{ .Key }} ({{ .Val }})",
+					Active:   fmt.Sprintf("%s {{ .Status }} {{ .Key }} ({{ .Val }})", promptui.IconSelect),
+					Inactive: "{{ .Status }} {{ .Key }} ({{ .Val }})",
+					Selected: "{{ .Status }} {{ .Key }} ({{ .Val }})",
 				},
 				Searcher: func(input string, index int) bool {
 					alias := aliasesList[index]
