@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/akymos/ff/internal"
 	"github.com/spf13/cobra"
@@ -33,6 +34,9 @@ $ ff add alias2 /tmp`,
 					return err
 				}
 				path = p
+			}
+			if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
+				return err
 			}
 			err := internal.Add(alias, path)
 			if err != nil {
