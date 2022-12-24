@@ -6,6 +6,7 @@ import (
 	"github.com/akymos/ff/internal"
 	"github.com/spf13/cobra"
 	"os"
+	"strings"
 )
 
 var (
@@ -38,6 +39,7 @@ $ ff add alias2 /tmp`,
 			if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
 				return err
 			}
+			alias = strings.ReplaceAll(alias, " ", "_")
 			err := internal.Add(alias, path)
 			if err != nil {
 				return err
