@@ -3,6 +3,7 @@ package internal
 import (
 	"bytes"
 	"os"
+	"strings"
 	"text/template"
 )
 
@@ -37,7 +38,11 @@ func GenerateAlias() error {
 	}
 	defer file.Close()
 
-	aliasTpl := template.Must(template.New("cd_override").Parse(`#!/bin/bash
+	funcMap := template.FuncMap{
+		"upper": strings.ToUpper,
+	}
+
+	aliasTpl := template.Must(template.New("cd_override").Funcs(funcMap).Parse(`#!/bin/bash
 cd() { 
 	if [[ $# -eq 0 ]]; then builtin cd ~ || return;
 	elif [[ -d $* ]]; then builtin cd "$@" || return; 
@@ -50,6 +55,12 @@ cd() {
 		fi; 
 	fi;
 }
+# set local var
+# added in v1.0
+{{- range $key, $val := .AliasList}}
+export {{$key}}="{{$val}}"
+export {{upper $key}}=${{$key}}
+{{- end}}
 `))
 	list := FindAll()
 	buffer := &bytes.Buffer{}
