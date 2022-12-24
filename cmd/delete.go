@@ -20,7 +20,7 @@ type aliasList struct {
 var (
 	deleteCmd = &cobra.Command{
 		Use:     "delete",
-		Aliases: []string{"del", "d", "-"},
+		Aliases: []string{"del", "rm", "d", "-"},
 		Short:   "Interactively allows you to delete an alias",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			defer internal.BaseConfig.Db.Close()
@@ -79,17 +79,29 @@ var (
 				return err
 			}
 
-			alias = aliasesList[i].Key
-			err = internal.Del(alias)
+			promptConfirm := promptui.Prompt{
+				Label: "Are you sure to delete all saved data? (y/n)",
+			}
+
+			result, err := promptConfirm.Run()
 			if err != nil {
 				return err
 			}
-			err = internal.GenerateAlias()
-			if err != nil {
-				return err
+
+			if result == "y" {
+				alias = aliasesList[i].Key
+				err = internal.Del(alias)
+				if err != nil {
+					return err
+				}
+				err = internal.GenerateAlias()
+				if err != nil {
+					return err
+				}
+				fmt.Printf("Alias %s deleted.\n", alias)
+				fmt.Printf("Now run \n%s\nor restart the shell.\n", "source \"$(ff alias)\"")
 			}
-			fmt.Printf("Alias %s deleted.\n", alias)
-			fmt.Printf("Now run \n%s\nor restart the shell.\n", "source \"$(ff alias)\"")
+
 			internal.CheckNewVersion()
 			return nil
 		},
