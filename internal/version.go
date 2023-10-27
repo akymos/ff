@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"github.com/creativeprojects/go-selfupdate"
@@ -14,7 +15,7 @@ var commit string
 var date string
 
 func CheckNewVersion() {
-	latest, _, err := selfupdate.DetectLatest("akymos/ff")
+	latest, _, err := selfupdate.DetectLatest(context.Background(), selfupdate.ParseSlug("akymos/ff"))
 	if err != nil {
 		return
 	}
@@ -24,7 +25,7 @@ func CheckNewVersion() {
 }
 
 func UpdateVersion() error {
-	latest, found, err := selfupdate.DetectLatest("akymos/ff")
+	latest, found, err := selfupdate.DetectLatest(context.Background(), selfupdate.ParseSlug("akymos/ff"))
 	if err != nil {
 		return fmt.Errorf("error occurred while detecting version: %v", err)
 	}
@@ -39,7 +40,7 @@ func UpdateVersion() error {
 	if err != nil {
 		return errors.New("could not locate executable path")
 	}
-	if err := selfupdate.UpdateTo(latest.AssetURL, latest.AssetName, exe); err != nil {
+	if err := selfupdate.UpdateTo(context.Background(), latest.AssetURL, latest.AssetName, exe); err != nil {
 		return fmt.Errorf("error occurred while updating binary: %v", err)
 	}
 	log.Printf("Successfully updated to version %s", latest.Version())

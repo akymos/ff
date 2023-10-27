@@ -9,7 +9,7 @@ local: local-build local-move
 
 local-build:
 	go install github.com/goreleaser/goreleaser@latest
-	goreleaser build --snapshot --rm-dist
+	goreleaser build --snapshot --clean
 
 local-move:
 	cp dist/ff_darwin_amd64_v1/ff /usr/local/bin/ff
